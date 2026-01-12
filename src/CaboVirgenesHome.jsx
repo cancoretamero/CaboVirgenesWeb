@@ -37,7 +37,6 @@ import {
   Volume2,
   VolumeX,
   Settings,
-  Captions,
   VideoOff,
   Anchor,
   X,
@@ -990,7 +989,7 @@ const CaboVirgenesHome = () => {
                             showSubtitles ? 'text-cyan-400' : 'text-white hover:text-cyan-400'
                           }`}
                         >
-                          <Captions className="w-5 h-5" />
+                          <span className="text-xs font-bold">CC</span>
                         </button>
                         <button onClick={toggleFullscreen} className="text-white hover:text-cyan-400 transition-colors">
                           <Maximize2 className="w-5 h-5" />
