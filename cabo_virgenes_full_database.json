@@ -1,0 +1,554 @@
+[
+  {
+    "id": "langostino_entero",
+    "name": "Langostino Entero",
+    "type": "product",
+    "parent_id": null,
+    "description": "Nuestro principal producto es el langostino austral, que habita en el sudoeste del océano Atlántico, frente a la costa patagónica del mar argentino y que comercializamos bajo diferentes formatos y presentaciones. Disponemos de una flota de barcos congeladores propios, que, en alta mar, capturan, procesan y congelan en el mismo barco, de ahí la excepcional calidad y frescura de nuestros productos. También disponemos de una planta de procesado en el mismo Puerto de Rawson, que procesa y congela la pesca de nuestros barcos fresqueros, que operan cerca de la costa, lo que garantiza la máxima calidad y frescura.",
+    "species": "Pleoticus Müelleri",
+    "capture_zone": "FAO 41",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "Caja 20×400 g",
+      "Caja 10×800 g",
+      "Caja 6×2 kg",
+      "Caja 2×7 kg (granel)"
+    ],
+    "classification": "L1 = 10–20 ppKg; L2 = 20–30 ppKg; L3 = 30–40 ppKg; L4 = 40–60 ppKg; L5 = 60–80 ppKg",
+    "sizes": null,
+    "season": {
+      "national_capture_months": [
+        "Jun",
+        "Jul",
+        "Ago",
+        "Sep",
+        "Oct",
+        "Nov"
+      ],
+      "provincial_capture_months": [
+        "Feb",
+        "Mar",
+        "Oct",
+        "Nov",
+        "Dic"
+      ],
+      "closed_months": [
+        "Ene",
+        "Abr",
+        "May"
+      ]
+    },
+    "notes": "También conocido como langostino austral salvaje."
+  },
+  {
+    "id": "cola_langostino",
+    "name": "Cola de Langostino",
+    "type": "product",
+    "parent_id": null,
+    "description": "Cola de langostino austral procesada procedente del langostino salvaje. Incluye varias variantes (cola, cola rota, cola mix, cola de reproceso).",
+    "species": "Pleoticus Muelleri",
+    "capture_zone": "FAO 41",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "6×2 kg",
+      "2×6 kg",
+      "3×6 kg",
+      "2×10 kg"
+    ],
+    "classification": "Varía según subproducto (C1–C4 para cola, CR para cola rota, CM para cola mix, CRP para cola de reproceso).",
+    "sizes": null,
+    "season": null,
+    "notes": "Producto base para formatos de valor añadido."
+  },
+  {
+    "id": "cola",
+    "name": "Cola",
+    "type": "subproduct",
+    "parent_id": "cola_langostino",
+    "description": "Cola de langostino austral procesada.",
+    "species": "Pleoticus Muelleri",
+    "capture_zone": "FAO 41",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "6×2 kg",
+      "2×6 kg",
+      "3×6 kg",
+      "2×10 kg"
+    ],
+    "classification": "C1 = 30–55 ppKg; C2 = 56–100 ppKg; C3 = 101–150 ppKg; C4 = 151–200 ppKg",
+    "sizes": null,
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "cola_rota",
+    "name": "Cola rota",
+    "type": "subproduct",
+    "parent_id": "cola_langostino",
+    "description": "Cola rota de langostino austral.",
+    "species": "Pleoticus Muelleri",
+    "capture_zone": "FAO 41",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "6×2 kg",
+      "2×6 kg",
+      "3×6 kg",
+      "2×10 kg"
+    ],
+    "classification": "CR = 30–100 ppKg",
+    "sizes": null,
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "cola_mix",
+    "name": "Cola Mix",
+    "type": "subproduct",
+    "parent_id": "cola_langostino",
+    "description": "Mezcla de colas de langostino.",
+    "species": "Pleoticus Muelleri",
+    "capture_zone": "FAO 41",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "6×2 kg",
+      "2×6 kg",
+      "3×6 kg",
+      "2×10 kg"
+    ],
+    "classification": "CM = 30–100 ppKg",
+    "sizes": null,
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "cola_reproceso",
+    "name": "Cola de reproceso",
+    "type": "subproduct",
+    "parent_id": "cola_langostino",
+    "description": "Cola de langostino destinada al reproceso.",
+    "species": "Pleoticus Muelleri",
+    "capture_zone": "FAO 41",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "6×2 kg",
+      "2×6 kg",
+      "3×6 kg",
+      "2×10 kg"
+    ],
+    "classification": "CRP = 30–100 ppKg",
+    "sizes": null,
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "con_piel_hlso",
+    "name": "Con Piel (HLSO)",
+    "type": "subproduct",
+    "parent_id": "cola_langostino",
+    "description": "Cola de langostino crudo con piel, ultracongelada IQF.",
+    "species": "Pleoticus Muelleri",
+    "capture_zone": "FAO 41",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "20×1 lb",
+      "10×800 g",
+      "10×2 lb",
+      "1×10 kg"
+    ],
+    "classification": "Piezas por libra: >15; 16–20; 21–25; 26–30; 31–40",
+    "sizes": null,
+    "season": null,
+    "notes": "Producto IQF con glaseo 20% según ficha técnica."
+  },
+  {
+    "id": "easy_peel",
+    "name": "Easy Peel",
+    "type": "subproduct",
+    "parent_id": "cola_langostino",
+    "description": "Cola de langostino crudo ultracongelado con corte Easy Peel.",
+    "species": "Pleoticus Muelleri",
+    "capture_zone": "FAO 41, Atlántico Suroeste",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "20×400 g",
+      "20×1 lb",
+      "10×800 g",
+      "10×2 lb",
+      "10×1 kg",
+      "1×10 kg"
+    ],
+    "classification": "Piezas por libra: 16–20; 21–25; 26–30; 31–40",
+    "sizes": null,
+    "season": null,
+    "notes": "IQF. Vida útil 24 meses, glaseo 10–20%."
+  },
+  {
+    "id": "pelado_desvenado",
+    "name": "Pelado y desvenado",
+    "type": "subproduct",
+    "parent_id": "cola_langostino",
+    "description": "Cola de langostino crudo pelado y devenado (sin cola).",
+    "species": "Pleoticus Muelleri",
+    "capture_zone": "FAO 41, Atlántico Suroeste",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "20×400 g",
+      "20×1 lb",
+      "10×800 g",
+      "10×2 lb",
+      "10×1 kg",
+      "1×10 kg"
+    ],
+    "classification": "Piezas por libra: 16–20; 21–25; 26–30; 31–40",
+    "sizes": null,
+    "season": null,
+    "notes": "IQF."
+  },
+  {
+    "id": "pelada_pud",
+    "name": "Pelada (PUD)",
+    "type": "subproduct",
+    "parent_id": "cola_langostino",
+    "description": "Cola de langostino crudo pelado sin devenar.",
+    "species": "Pleoticus Muelleri",
+    "capture_zone": "FAO 41, Atlántico Suroeste",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "20×400 g",
+      "20×1 lb",
+      "10×800 g",
+      "10×2 lb",
+      "10×1 kg",
+      "1×10 kg"
+    ],
+    "classification": "Piezas por libra: 16–20; 21–25; 26–30; 31–40",
+    "sizes": null,
+    "season": null,
+    "notes": "IQF. Vida útil 36 meses."
+  },
+  {
+    "id": "pelada_tail_on",
+    "name": "Pelada y Devenada Tail On (PDTO)",
+    "type": "subproduct",
+    "parent_id": "cola_langostino",
+    "description": "Cola de langostino crudo pelada y devenada con cola (Tail On).",
+    "species": "Pleoticus Muelleri",
+    "capture_zone": "FAO 41, Atlántico Suroeste",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "20×400 g",
+      "20×1 lb",
+      "10×800 g",
+      "10×2 lb",
+      "10×1 kg",
+      "1×10 kg"
+    ],
+    "classification": "Piezas por libra: 16–20; 21–25; 26–30; 31–40",
+    "sizes": null,
+    "season": null,
+    "notes": "IQF. Vida útil 24 meses, glaseo 10–20%."
+  },
+  {
+    "id": "merluza_argentina",
+    "name": "Merluza Argentina",
+    "type": "product",
+    "parent_id": null,
+    "description": "Pescado de la costa argentina rico en ácidos grasos Omega‑3, proteínas y minerales, con vitaminas del grupo B.",
+    "species": "Merluccius Hubbsi",
+    "capture_zone": "Mar Argentino (FAO 41)",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": null,
+    "classification": null,
+    "sizes": null,
+    "season": null,
+    "notes": "Tiene variantes de filetes con piel y sin piel, e HGT."
+  },
+  {
+    "id": "filetes_merluza_con_piel",
+    "name": "Filetes de merluza con piel",
+    "type": "subproduct",
+    "parent_id": "merluza_argentina",
+    "description": "Filetes de merluza con piel con diferentes rangos de peso.",
+    "species": null,
+    "capture_zone": null,
+    "method": null,
+    "presentation": "IQF granel, interfoliada o IQF bolsa",
+    "formatos": [
+      "IQF Granel 10 kg",
+      "Interfoliada 7 kg",
+      "IQF Bolsas 1 kg",
+      "Interfoliada 10 lb",
+      "IQF Bolsas 2 lb"
+    ],
+    "classification": "Varía según peso",
+    "sizes": [
+      "60–200 g",
+      "60–120 g",
+      "120–200 g",
+      "200-UP g",
+      "2–4 oz",
+      "4–6 oz",
+      "6–8 oz",
+      "8-UP oz"
+    ],
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "filetes_merluza_sin_piel",
+    "name": "Filetes de merluza sin piel",
+    "type": "subproduct",
+    "parent_id": "merluza_argentina",
+    "description": "Filetes de merluza sin piel en diferentes pesos.",
+    "species": null,
+    "capture_zone": null,
+    "method": null,
+    "presentation": "IQF granel, interfoliada o IQF bolsa",
+    "formatos": [
+      "IQF Granel 10 kg",
+      "Interfoliada 7 kg",
+      "IQF Bolsas 1 kg",
+      "Interfoliada 10 lb",
+      "IQF Bolsas 2 lb"
+    ],
+    "classification": "Varía según peso",
+    "sizes": [
+      "60–200 g",
+      "60–120 g",
+      "120–200 g",
+      "200-UP g",
+      "2–4 oz",
+      "4–6 oz",
+      "6–8 oz",
+      "8-UP oz"
+    ],
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "merluza_hgt",
+    "name": "Merluza HGT",
+    "type": "subproduct",
+    "parent_id": "merluza_argentina",
+    "description": "Merluza eviscerada con cabeza y cola (HGT).",
+    "species": null,
+    "capture_zone": null,
+    "method": null,
+    "presentation": "IQF Granel o Interfoliada",
+    "formatos": [
+      "IQF Granel 18 kg",
+      "Interfoliada 6 kg"
+    ],
+    "classification": "Varía según talla",
+    "sizes": [
+      "80–200 g",
+      "80–300 g",
+      "80–150 g",
+      "150–300 g",
+      "300–500 g"
+    ],
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "calamar_illex",
+    "name": "Calamar Illex",
+    "type": "product",
+    "parent_id": null,
+    "description": "Calamar Illex capturado en Argentina, alimento rico en minerales y proteínas y bajo en calorías.",
+    "species": "Illex argentinus",
+    "capture_zone": "FAO 41",
+    "method": "Pesca extractiva",
+    "presentation": "Arte de pesca: anzuelos y sedales",
+    "formatos": [
+      "1×12 kg",
+      "2×6 kg"
+    ],
+    "classification": null,
+    "sizes": [
+      "100/200 g (15–18 cm)",
+      "200/300 g (18–23 cm)",
+      "300/400 g (23–28 cm)",
+      "500/800 g (28–32 cm)",
+      "800-UP (>32 cm)"
+    ],
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "vieira_pacifico",
+    "name": "Vieira del Pacífico",
+    "type": "product",
+    "parent_id": null,
+    "description": "Vieiras congeladas de alta calidad procesadas con tecnología avanzada.",
+    "species": "Argopecten Purpuratus",
+    "capture_zone": "FAO 87",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "10×1 kg (tallo)",
+      "7×1 kg (media concha)",
+      "14×500 g (media concha)",
+      "20×500 g (tallo)",
+      "Granel 10 kg"
+    ],
+    "classification": "Media concha con coral: 10–20, 20–30, 30–40, 40–60 piezas/kg; Tallo con/sin coral: 10–20, 20–30, 30–40, 40–60, 60–80 piezas/lb; Broken",
+    "sizes": null,
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "pota_peru",
+    "name": "Pota de Perú",
+    "type": "product",
+    "parent_id": null,
+    "description": "Calamar gigante (Dosidicus gigas) pescado en las costas de Perú y comercializado entero despiezado.",
+    "species": "Dosidicus Gigas",
+    "capture_zone": "FAO 87",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "Anillas 1 kg",
+      "Anillas 20×1 kg",
+      "Entero despiezado 2×10 kg"
+    ],
+    "classification": null,
+    "sizes": [
+      "Filete: 500–1000 g; 1000–2000 g; 2000–3000 g",
+      "Alas: 100–200 g; 200–300 g; 300–400 g; 400–600 g",
+      "Rejo: 0–50 g; 50–100 g; 100–150 g",
+      "Tubo: 100–200 g; 200–300 g; 300–400 g; 400–600 g"
+    ],
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "langostino_vannamei",
+    "name": "Langostino Vannamei",
+    "type": "product",
+    "parent_id": null,
+    "description": "Langostino criado por acuicultura en piscinas con congelación en vivo; sin fosfatos ni antibióticos.",
+    "species": "Penaeus Vannamei",
+    "capture_zone": "Según el origen",
+    "method": "Acuicultura",
+    "presentation": null,
+    "formatos": [
+      "10×2 kg",
+      "10×700 g",
+      "10×800 g",
+      "10×900 g",
+      "10×1 kg",
+      "6×2 kg",
+      "6×1600 g"
+    ],
+    "classification": null,
+    "sizes": [
+      "Entera: 20/30; 30/40; 40/50; 50/60; 60/70; 70/80; 80/100",
+      "Cola: 16/20; 21/25; 26/30; 31/35; 36/40; 41/50; 51/60; 61/70; 71/80; 71/90; 91/110; 110 up"
+    ],
+    "season": null,
+    "notes": "Producto sostenible sin uso de antibióticos."
+  },
+  {
+    "id": "carabinero",
+    "name": "Carabinero",
+    "type": "product",
+    "parent_id": null,
+    "description": "Crustáceo carabinero procedente de diversos orígenes (Marruecos, Mauritania, Francia, Reino Unido).",
+    "species": "Plesiopenaeus spp.",
+    "capture_zone": "Según el origen",
+    "method": "Pesca extractiva",
+    "presentation": "Crudo entero",
+    "formatos": [
+      "Granel",
+      "400 g",
+      "800 g",
+      "1,5 kg"
+    ],
+    "classification": null,
+    "sizes": [
+      "Surinam/Marruecos: 6–8; 8–12; 13–15; 16–20; 21–30; 31–40",
+      "Mozambique: <10; 10/20; 21/30; 31/40; 41/60; 61/80"
+    ],
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "cigala",
+    "name": "Cigala",
+    "type": "product",
+    "parent_id": null,
+    "description": "Cigala o Nephrops Norvegicus capturada en el Atlántico NE.",
+    "species": "Nephrops Norvegicus",
+    "capture_zone": "FAO 27 (Atlántico NE)",
+    "method": "Pesca extractiva",
+    "presentation": "Entero",
+    "formatos": [
+      "3×3 kg",
+      "6×2 kg"
+    ],
+    "classification": null,
+    "sizes": [
+      "6; 6–10; 10–15; 16–20; 21–30; 31–40; 41–50; 50–70; 60–80"
+    ],
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "pulpo_sin_tratamiento",
+    "name": "Pulpo sin tratamiento",
+    "type": "product",
+    "parent_id": null,
+    "description": "Pulpo vulgaris sin tratamiento, presentado en bloque envuelto.",
+    "species": "Octopus Vulgaris",
+    "capture_zone": "FAO 34 (Atlántico Centro-Este)",
+    "method": "Pesca extractiva",
+    "presentation": "Bloque envuelto",
+    "formatos": [
+      "Granel"
+    ],
+    "classification": null,
+    "sizes": [
+      "T1; T2; T3; T4; T5; T6; T7"
+    ],
+    "season": null,
+    "notes": null
+  },
+  {
+    "id": "langostino_diferentes_origenes",
+    "name": "Langostino (diferentes orígenes)",
+    "type": "product",
+    "parent_id": null,
+    "description": "Varias especies de langostinos de diferentes orígenes (Vannamei, Cubano, Tigre).",
+    "species": "Varias (Vannamei, Cubano, Tigre)",
+    "capture_zone": "Según origen",
+    "method": "Pesca extractiva",
+    "presentation": null,
+    "formatos": [
+      "10×2 kg",
+      "18×1 kg",
+      "12×1 kg"
+    ],
+    "classification": null,
+    "sizes": [
+      "Variedad 1: 20/30; 30/60; 50/60; 70/80; 80/100",
+      "Variedad 2: 36/40; 41/50; 51/60",
+      "Variedad 3: 22/28; 28/34; 34/43; 43/52; 52/58; 58/80; 80/100; 100/120",
+      "Variedad 4: 10/15; 16/20; 21/30; 31/40; 41/50; 51/60; 81/100; 101/120"
+    ],
+    "season": null,
+    "notes": null
+  }
+]
