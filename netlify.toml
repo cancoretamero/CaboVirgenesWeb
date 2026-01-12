@@ -1,0 +1,6 @@
+#[build]
+[build]
+  # Command to run the build using the project's package.json script
+  command = "npm run build"
+  # Directory to publish after the build completes
+  publish = "dist"
