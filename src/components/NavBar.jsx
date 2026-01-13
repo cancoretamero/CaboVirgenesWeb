@@ -18,16 +18,25 @@ import {
 // Static navigation definition. Each item can optionally have a list of
 // subitems to render a mega menu. This structure mirrors the original
 // data supplied by the user.
+/*
+ * Navigation definitions. Each item optionally includes a list of
+ * subitems with ids used for deep linking. The `id` field on
+ * top-level items corresponds to an anchor on the current page.
+ * Subitems under "Quienes Somos" include an `id` property which
+ * matches the section ids defined on the About page. This allows
+ * navigation links to point either to anchors on the home page or
+ * to the dedicated about page and its sections.
+ */
 const NAV_ITEMS = [
   {
     label: 'Quienes Somos',
     id: 'quienes_somos',
     subitems: [
-      { title: 'Cabo Vírgenes', desc: 'Nuestra identidad e historia.' },
-      { title: 'Flota', desc: 'Tecnología naval propia.' },
-      { title: 'Plantas', desc: 'Procesamiento en origen.' },
-      { title: 'Dónde Estamos', desc: 'Sedes globales.' },
-      { title: 'Mercados', desc: 'Presencia internacional.' },
+      { title: 'Cabo Vírgenes', desc: 'Nuestra identidad e historia.', id: 'historia' },
+      { title: 'Flota', desc: 'Tecnología naval propia.', id: 'flota' },
+      { title: 'Plantas', desc: 'Procesamiento en origen.', id: 'plantas' },
+      { title: 'Dónde Estamos', desc: 'Sedes globales.', id: 'ubicacion' },
+      { title: 'Mercados', desc: 'Presencia internacional.', id: 'mercados' },
     ],
   },
   {
@@ -97,7 +106,12 @@ function NavBar({ onContactClick }) {
                 }
               >
                 <a
-                  href={`#${item.id}`}
+                  href={
+                    // If "Quienes Somos", navigate to the dedicated about page.
+                    item.id === 'quienes_somos'
+                      ? '/quienes-somos.html'
+                      : `#${item.id}`
+                  }
                   className={`hover:text-white transition-all flex items-center gap-1 ${
                     activeSubmenu === item.id ? 'text-white' : ''
                   }`}
@@ -163,10 +177,15 @@ function NavBar({ onContactClick }) {
               </div>
             </div>
             <div className="col-span-8 grid grid-cols-2 gap-4">
-              {NAV_ITEMS.find((i) => i.id === activeSubmenu)?.subitems.map((sub, idx) => (
+                {NAV_ITEMS.find((i) => i.id === activeSubmenu)?.subitems.map((sub, idx) => (
                 <a
                   key={idx}
-                  href="#"
+                  href={
+                    // If in Quienes Somos submenu and sub.id exists, link to about page section
+                    activeSubmenu === 'quienes_somos' && sub.id
+                      ? `/quienes-somos.html#${sub.id}`
+                      : '#'
+                  }
                   className="flex items-start gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group"
                 >
                   <div className="mt-1 w-1.5 h-1.5 rounded-full bg-cyan-500 group-hover:shadow-[0_0_10px_#06b6d4] transition-all"></div>
