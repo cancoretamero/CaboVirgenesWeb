@@ -12,10 +12,20 @@ import {
   Warehouse,
   CheckCircle,
   MapPin,
+  Thermometer,
+  Award,
+  Globe,
+  Users,
+  Calendar,
+  Mail,
+  Phone,
+  Activity,
   Navigation,
   Wind,
   Fuel,
   Gauge,
+  Layers,
+  Fish,
   Image as ImageIcon,
   Video,
   Map as MapIcon,
@@ -25,25 +35,30 @@ import {
   ZoomOut
 } from 'lucide-react';
 
+/*
+ * AboutCaboVirgenes
+ *
+ * This component renders the "Quienes Somos" (About Us) page.
+ * Updates: Fixed images, integrated shared NavBar/Footer, and implemented WorldMap component.
+ */
+
 const AboutCaboVirgenes = () => {
-  // --- Estados ---
+  // State management for modals and interactive widgets
   const [selectedShip, setSelectedShip] = useState(null);
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [activeModalTab, setActiveModalTab] = useState('info');
   
-  // Estados del Mapa
+  // Map States
   const [hoveredCountry, setHoveredCountry] = useState(null);
   const [mapView, setMapView] = useState('global');
 
-  // --- Datos del Mapa ---
-  // Definimos los puntos clave (Hubs) para pasar al componente WorldMap
+  // --- CONFIGURACIÓN DEL MAPA (Datos para el componente WorldMap) ---
   const mapHubs = useMemo(() => [
     { name: "Palencia", coordinates: [-4.53, 42.01] }, // España
     { name: "Rawson", coordinates: [-65.10, -43.30] }, // Argentina
   ], []);
 
-  // Definimos conexiones simuladas desde los hubs a mercados clave
   const mapConnections = useMemo(() => [
     { from: [-4.53, 42.01], to: [12.56, 41.87] }, // España -> Italia
     { from: [-4.53, 42.01], to: [2.35, 48.85] },  // España -> Francia
@@ -54,10 +69,10 @@ const AboutCaboVirgenes = () => {
     { from: [-65.10, -43.30], to: [-47.92, -15.78] },// Argentina -> Brasil
   ], []);
 
-  // Mapeo de botones de región a las claves que espera WorldMap.jsx
+  // Mapping for region names to internal IDs used by WorldMap
   const regionMap = {
     Global: 'global',
-    'América': 'nam', // North/South America focus
+    'América': 'nam',
     'Europa': 'eur',
     'Asia': 'asia',
     'África': 'afr',
@@ -65,19 +80,19 @@ const AboutCaboVirgenes = () => {
   };
 
   /* -----------------------------------------------------------------
-   * Datos Estáticos (Historia, Flota, Plantas)
-   * Imágenes actualizadas a enlaces directos fiables.
+   * Data Definitions (CONTENIDO ORIGINAL CON IMÁGENES CORREGIDAS)
    */
   const HISTORY_DATA = [
-    { year: 'Origen', title: 'La Unión de Experiencia', text: 'Cabo Vírgenes surge de la unión de más de 48 años de experiencia y conocimientos del sector de los actuales gerentes, Pedro Mielgo en España, y Eduardo del Rio en Argentina.' },
-    { year: '2008', title: 'Nace la Alianza', text: 'Se estableció dicha alianza Hispano/Argentina y se comienza a operar desde Argentina con dos barcos fresqueros: el Cabo Vírgenes y el Nueva Esperanza.' },
-    { year: '2012', title: 'Expansión Internacional', text: 'El 18 de enero del 2012, se establece en Palencia (España), Cabo Vírgenes España, S.L, convirtiéndose en el hub logístico global.' },
+    { year: 'Origen', title: 'La Unión de Experiencia', text: 'Cabo Vírgenes surge de la unión de más de 48 años de experiencia y conocimientos del sector de los actuales gerentes, Pedro Mielgo en España, y Eduardo del Rio en Argentina. Nuestra actividad se basa en una alianza Hispano/Argentina a través de un sistema de integración vertical desde la extracción y procesado del langostino austral hasta su posterior comercialización y distribución.' },
+    { year: '2008', title: 'Nace la Alianza', text: 'Se estableció dicha alianza Hispano/Argentina y se comienza a operar desde Argentina con dos barcos fresqueros: el Cabo Vírgenes y el Nueva Esperanza. También, Argentina adquiere una planta en Rawson al Grupo Pescanova, realizando una gran obra de reformas e implantación de las últimas tecnologías en congelación. Esta planta está situada a tan solo 400 metros del puerto de Rawson.' },
+    { year: '2012', title: 'Expansión Internacional', text: 'El 18 de enero del 2012, se establece en Palencia (España), Cabo Vírgenes España, S.L, que se convierte en el perfecto aliado de Argentina, pasando a ser su principal centro de operaciones y logístico a nivel internacional, encargándose de la comercialización del producto.' },
     { year: '2016', title: 'Flota Tangonera', text: 'Argentina comienza a operar con dos barcos tangoneros congeladores: Mar de Oro y Anita Álvarez con una capacidad de pesca de 1400 toneladas.' },
-    { year: '2017', title: 'Valor Añadido', text: 'España construye la planta de reprocesado en Palencia, con líneas de Skin, Doy Pack y tecnología de CO2 inocuo.' },
-    { year: '2019', title: 'Innovación Naval', text: 'Botadura del Luca Santino, primer fresquero con hielo líquido. Comienza a operar el potero Orión 2.' },
-    { year: '2020', title: 'Nuevos Horizontes', text: 'Incorporación de planta en Comodoro Rivadavia y el buque Perla Negra. Opera el Espartano con proa invertida.' },
-    { year: '2022', title: 'El Gigante Atón', text: 'Botadura del nuevo tangonero Atón. Ampliación del frigorífico en Palencia a 5.500 ton.' },
-    { year: 'Futuro', title: 'Expansión Continua', text: 'Producción diaria >120 toneladas y crecimiento anual >150%, consolidando el liderazgo global.' }
+    { year: '2017', title: 'Valor Añadido en España', text: 'España construye la planta de reprocesado en Palencia, complementando la producción con líneas de Skin y Doy Pack, líneas de peladoras automáticas y frío con la última tecnología de CO2 totalmente inocuo.' },
+    { year: '2019', title: 'Innovación Naval', text: 'En marzo se produce la botadura del Luca Santino, primer barco fresquero de la flota argentina con hielo líquido. También comienza a operar un barco potero, el Orión 2 además de otras embarcaciones como El Malo I, el Sofía B y el Natale.' },
+    { year: '2020', title: 'Nuevos Horizontes', text: 'Argentina incorpora una planta en la ciudad de Comodoro Rivadavia y el buque Perla Negra, ampliando la gama a la merluza argentina. Comienza a operar el Espartano, primer prototipo de proa invertida.' },
+    { year: '2021', title: 'Logística Portuaria', text: 'Argentina comienza a operar en un muelle de uso exclusivo en el puerto de Rawson para agilizar todavía más la descarga y procesado en planta del producto congelado en tierra.' },
+    { year: '2022', title: 'El Gigante Atón', text: 'Se produce la botadura de un nuevo barco tangonero: el Atón. Por parte de España se amplía la planta de Palencia y se construye un Frigorífico que aumentará a más de 5.500 ton la capacidad de almacenamiento.' },
+    { year: 'Futuro', title: 'Expansión Continua', text: 'El negocio está en plena expansión. La capacidad de producción diaria se encuentra por encima de las 120 toneladas con crecimientos anuales que superan el 150%, consolidando nuestra marca como referente en el mercado internacional.' }
   ];
 
   const FLOTA_FRESQUERA = [
@@ -87,8 +102,18 @@ const AboutCaboVirgenes = () => {
       type: 'Fresquero Costero',
       img: 'https://images.unsplash.com/photo-1544256277-c956403239a5?q=80&w=800&auto=format&fit=crop',
       status: 'Operando',
-      specs: { eslora: '28 m', manga: '7 m', bodega: 'Fresca', motor: '1200 HP' },
-      gallery: ['https://images.unsplash.com/photo-1628186743158-73236e81031d?q=80&w=800'],
+      specs: {
+        eslora: '28 m',
+        manga: '7 m',
+        bodega: 'Fresca',
+        motor: '1200 HP',
+        zona: 'Costera < 12 millas',
+        puerto: 'Rawson'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1628186743158-73236e81031d?q=80&w=800',
+        'https://images.unsplash.com/photo-1534068590799-09895a701e3e?q=80&w=800'
+      ],
       video: 'https://media.istockphoto.com/id/1169273299/video/fishing-boat-sailing-in-the-atlantic-ocean.mp4?s=mp4-640x640-is&k=20&c=L_qJOV9J9ZtZ7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z',
       location: { lat: '-43.300', lng: '-65.102', label: 'Puerto Rawson' }
     },
@@ -98,8 +123,18 @@ const AboutCaboVirgenes = () => {
       type: 'Fresquero Costero',
       img: 'https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?q=80&w=800&auto=format&fit=crop',
       status: 'Operando',
-      specs: { eslora: '26 m', manga: '6.5 m', bodega: 'Fresca', motor: '1100 HP' },
-      gallery: ['https://images.unsplash.com/photo-1505141065261-7e829df8327d?q=80&w=800'],
+      specs: {
+        eslora: '26 m',
+        manga: '6.5 m',
+        bodega: 'Fresca',
+        motor: '1100 HP',
+        zona: 'Costera < 12 millas',
+        puerto: 'Rawson'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1505141065261-7e829df8327d?q=80&w=800',
+        'https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?q=80&w=800'
+      ],
       video: null,
       location: { lat: '-43.350', lng: '-65.050', label: 'Zona Pesca' }
     },
@@ -109,8 +144,17 @@ const AboutCaboVirgenes = () => {
       type: 'Fresquero Hielo Líquido',
       img: 'https://images.unsplash.com/photo-1612686635542-2244f734544e?q=80&w=800&auto=format&fit=crop',
       status: 'Innovación',
-      specs: { eslora: '32 m', manga: '8 m', sistema: 'Hielo Líquido', motor: '1500 HP' },
-      gallery: ['https://images.unsplash.com/photo-1566373705052-16a3013d2f95?q=80&w=800'],
+      specs: {
+        eslora: '32 m',
+        manga: '8 m',
+        sistema: 'Hielo Líquido',
+        tecno: 'Calidad Premium',
+        motor: '1500 HP'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1566373705052-16a3013d2f95?q=80&w=800',
+        'https://images.unsplash.com/photo-1605218427368-2c262a632742?q=80&w=800'
+      ],
       video: null,
       location: { lat: '-43.300', lng: '-65.102', label: 'Puerto Rawson' }
     },
@@ -120,8 +164,16 @@ const AboutCaboVirgenes = () => {
       type: 'Proa Invertida',
       img: 'https://images.unsplash.com/photo-1559798402-9ae19f032232?q=80&w=800&auto=format&fit=crop',
       status: 'Prototipo',
-      specs: { diseño: 'Astillero Cortessi', innovacion: 'Estabilidad', tipo: 'Polivalente', eslora: '29 m' },
-      gallery: ['https://images.unsplash.com/photo-1505141065261-7e829df8327d?q=80&w=800'],
+      specs: {
+        diseño: 'Astillero Cortessi',
+        innovacion: 'Estabilidad',
+        tipo: 'Polivalente',
+        eslora: '29 m',
+        manga: '7.5 m'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1505141065261-7e829df8327d?q=80&w=800'
+      ],
       video: null,
       location: { lat: '-43.400', lng: '-65.000', label: 'Zona Pesca' }
     }
@@ -134,9 +186,19 @@ const AboutCaboVirgenes = () => {
       type: 'Tangonero Moderno',
       img: 'https://images.unsplash.com/photo-1516216628859-9bccecab13ca?q=80&w=800&auto=format&fit=crop',
       status: 'Buque Insignia',
-      specs: { año: '2022', puerto: 'Madryn', eslora: '42.5 m', capacidad: '180 Ton' },
-      gallery: ['https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?q=80&w=800'],
-      video: null,
+      specs: {
+        año: '2022',
+        puerto: 'Madryn',
+        proceso: 'A Bordo',
+        eslora: '42.5 m',
+        capacidad: '180 Ton',
+        motor: '2500 HP'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?q=80&w=800',
+        'https://images.unsplash.com/photo-1623910270365-9b45727235c4?q=80&w=800'
+      ],
+      video: 'https://media.istockphoto.com/id/1169273299/video/fishing-boat-sailing-in-the-atlantic-ocean.mp4?s=mp4-640x640-is&k=20&c=L_qJOV9J9ZtZ7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z',
       location: { lat: '-42.700', lng: '-60.500', label: 'Alta Mar' }
     },
     {
@@ -145,8 +207,16 @@ const AboutCaboVirgenes = () => {
       type: 'Tangonero Congelador',
       img: 'https://images.unsplash.com/photo-1589191995092-668887805631?q=80&w=800&auto=format&fit=crop',
       status: 'Alta Mar',
-      specs: { capacidad: '1400 Ton', puerto: 'Madryn', eslora: '40 m', manga: '9 m' },
-      gallery: ['https://images.unsplash.com/photo-1628186743158-73236e81031d?q=80&w=800'],
+      specs: {
+        capacidad: '1400 Ton',
+        puerto: 'Madryn',
+        tipo: 'Congelador',
+        eslora: '40 m',
+        manga: '9 m'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1628186743158-73236e81031d?q=80&w=800'
+      ],
       video: null,
       location: { lat: '-42.500', lng: '-61.000', label: 'Alta Mar' }
     },
@@ -156,8 +226,16 @@ const AboutCaboVirgenes = () => {
       type: 'Tangonero Congelador',
       img: 'https://images.unsplash.com/photo-1552825716-2795fa5ab941?q=80&w=800&auto=format&fit=crop',
       status: 'Alta Mar',
-      specs: { capacidad: '1400 Ton', puerto: 'Madryn', eslora: '41 m', manga: '9.5 m' },
-      gallery: ['https://images.unsplash.com/photo-1605218427368-2c262a632742?q=80&w=800'],
+      specs: {
+        capacidad: '1400 Ton',
+        puerto: 'Madryn',
+        tipo: 'Congelador',
+        eslora: '41 m',
+        manga: '9.5 m'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1605218427368-2c262a632742?q=80&w=800'
+      ],
       video: null,
       location: { lat: '-42.000', lng: '-60.000', label: 'Alta Mar' }
     },
@@ -167,8 +245,16 @@ const AboutCaboVirgenes = () => {
       type: 'Potero',
       img: 'https://images.unsplash.com/photo-1502126233261-39578ae1f544?q=80&w=800&auto=format&fit=crop',
       status: 'Campaña Illex',
-      specs: { especie: 'Calamar Illex', sistema: 'Potera', luces: 'LED', eslora: '45 m' },
-      gallery: ['https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800'],
+      specs: {
+        especie: 'Calamar Illex',
+        sistema: 'Potera',
+        luces: 'LED',
+        eslora: '45 m',
+        capacidad: '300 Ton'
+      },
+      gallery: [
+        'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800'
+      ],
       video: null,
       location: { lat: '-44.000', lng: '-62.000', label: 'Alta Mar' }
     }
@@ -184,9 +270,10 @@ const AboutCaboVirgenes = () => {
       features: ['Recepción Inmediata', 'Clasificación Automática', 'Túneles de Congelación', 'Sala de Envasado', 'Muelle Privado'],
       gallery: [
         'https://images.unsplash.com/photo-1628186743158-73236e81031d?q=80&w=800',
-        'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800'
+        'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800',
+        'https://images.unsplash.com/photo-1580674285054-bed31e145f59?q=80&w=800'
       ],
-      video: null,
+      video: 'https://media.istockphoto.com/id/1324391698/video/modern-factory-production-line.mp4?s=mp4-640x640-is&k=20&c=...',
       location: { address: 'Av. M. González y S.J.C. Marsengo (9103)', city: 'Puerto Rawson, Argentina' }
     },
     {
@@ -210,15 +297,39 @@ const AboutCaboVirgenes = () => {
       desc: 'Planta especializada en procesado y reprocesado. Ampliación estratégica para la línea de Merluza Argentina, mejorando la competitividad y oferta global.',
       img: 'https://images.unsplash.com/photo-1598514930190-3cb83e449265?q=80&w=1200&auto=format&fit=crop',
       features: ['Procesado de Merluza', 'Congelación Rápida', 'Línea de Fileteado', 'Almacenamiento en Frío'],
-      gallery: ['https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800'],
+      gallery: [
+        'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800'
+      ],
       video: null,
       location: { address: 'Las Toninas 636', city: 'Comodoro Rivadavia, Argentina' }
     }
   ];
 
+  const COUNTRIES_LIST = [
+    'Albania', 'Alemania', 'Angola', 'Arabia Saudita', 'Argelia', 'Argentina', 'Austria', 'Australia',
+    'Bélgica', 'Bosnia', 'Bulgaria', 'Canadá', 'Chipre', 'China', 'Corea del Sur', 'Costa Rica',
+    'Croacia', 'Dinamarca', 'Eslovaquia', 'Eslovenia', 'Egipto', 'Emiratos Árabes', 'Estados Unidos',
+    'España', 'Estonia', 'Finlandia', 'Francia', 'Grecia', 'Guatemala', 'Holanda', 'Hong Kong',
+    'Honduras', 'Hungría', 'India', 'Indonesia', 'Irlanda', 'Islandia', 'Israel', 'Italia', 'Japón',
+    'Kuwait', 'Letonia', 'Lituania', 'Luxemburgo', 'Malta', 'Macedonia', 'Malasia', 'Marruecos',
+    'Mozambique', 'Mongolia', 'Montenegro', 'Myanmar', 'Noruega', 'Nueva Zelanda', 'Polonia',
+    'Portugal', 'Perú', 'Reino Unido', 'Rep. Dominicana', 'Rep. Checa', 'Rumanía', 'Rusia', 'Serbia',
+    'Slovenia', 'Sudáfrica', 'Suecia', 'Tailandia', 'Taiwán', 'Turquía', 'Ucrania', 'Uruguay', 'Vietnam'
+  ];
+
+  // Helper functions to open modals and compute map view
+  const handleOpenShipModal = (ship) => {
+    setSelectedShip(ship);
+    setActiveModalTab('info');
+  };
+  const handleOpenPlantModal = (plant) => {
+    setSelectedPlant(plant);
+    setActiveModalTab('info');
+  };
+
   return (
     <div className="min-h-screen bg-[#0f172a] text-white font-['Poppins'] selection:bg-cyan-500 selection:text-white overflow-x-hidden">
-      {/* Estilos Globales */}
+      {/* Global styling and utilities */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
@@ -229,7 +340,7 @@ const AboutCaboVirgenes = () => {
         .glass-apple { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
 
-        /* Glass navbar styles */
+        /* Glass navbar styles (match Home) */
         .glass-nav {
           background-color: rgba(255, 255, 255, 0.25);
           backdrop-filter: blur(4px) saturate(180%);
@@ -246,6 +357,9 @@ const AboutCaboVirgenes = () => {
           border: 1px solid rgba(255, 255, 255, 0.3);
           box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.37);
         }
+
+        .map-region { transition: all 0.5s ease; cursor: pointer; }
+        .map-region:hover { fill: rgba(6, 182, 212, 0.6); filter: drop-shadow(0 0 10px rgba(6,182,212,0.5)); }
       `}</style>
       
       <NavBar onContactClick={() => setIsContactModalOpen(true)} />
@@ -260,7 +374,7 @@ const AboutCaboVirgenes = () => {
           <p className="text-slate-300 max-w-3xl mx-auto text-lg font-light leading-relaxed">Una alianza Hispano/Argentina forjada a través de décadas de experiencia, dedicada a la excelencia en la captura y elaboración de productos del mar salvajes.</p>
         </div>
       </div>
-
+      
       {/* History */}
       <section id="historia" className="py-24 bg-[#0a1120] relative border-t border-white/5">
         <div className="container mx-auto px-6 relative z-10">
@@ -281,12 +395,12 @@ const AboutCaboVirgenes = () => {
           </div>
         </div>
       </section>
-
+      
       {/* Wave separator */}
       <div className="relative w-full -mb-1 z-10 pointer-events-none bg-[#0a1120]">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-auto block fill-[#0f172a]"><path fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
       </div>
-
+      
       {/* Fleet */}
       <section id="flota" className="py-24 bg-[#0f172a] relative">
         <div className="container mx-auto px-6">
@@ -295,7 +409,6 @@ const AboutCaboVirgenes = () => {
             <h2 className="text-4xl font-light text-white mb-6">Operativa en FAO 41</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">Contamos con una flota propia que cumple con la más estricta reglamentación internacional en cuanto a conservación de especies y medio ambiente.</p>
           </div>
-          {/* Fresqueros */}
           <div className="mb-20">
             <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
               <Ship className="w-6 h-6 text-cyan-400" />
@@ -325,7 +438,6 @@ const AboutCaboVirgenes = () => {
               ))}
             </div>
           </div>
-          {/* Congeladores */}
           <div>
             <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4"><Snowflake className="w-6 h-6 text-cyan-400" /><div><h3 className="text-2xl text-white font-medium">Barcos Congeladores</h3><p className="text-xs text-slate-500 uppercase tracking-widest">Puerto Madryn • Procesado a Bordo</p></div></div>
             <div className="flex overflow-x-auto gap-6 pb-8 snap-x scrollbar-hide">
@@ -351,7 +463,7 @@ const AboutCaboVirgenes = () => {
           </div>
         </div>
       </section>
-
+      
       {/* Separator */}
       <div className="relative w-full -mt-1 z-10 pointer-events-none bg-slate-50"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-auto block fill-[#0a1120]"><path fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg></div>
       
@@ -380,8 +492,8 @@ const AboutCaboVirgenes = () => {
           <div className="grid md:grid-cols-2 gap-16"><div className="glass-panel p-10 rounded-[3rem] border border-white/10 hover:border-cyan-500/30 transition-all"><div className="flex items-center gap-4 mb-8"><span className="text-6xl">🇪🇸</span><div><h3 className="text-3xl font-bold text-white">España</h3><p className="text-cyan-400 text-sm uppercase tracking-widest">Hub Logístico & Distribución</p></div></div><div className="space-y-8"><div><h4 className="text-white font-bold mb-2 flex items-center gap-2"><MapPin className="w-4 h-4 text-cyan-500" /> Palencia (HQ)</h4><p className="text-slate-400 text-sm ml-6">Calle Torneros 18, Polígono San Antolín<br/>34004 – Palencia</p><p className="text-slate-400 text-sm ml-6 mt-1">+34 979 181 438 | info@cabovirgenes.es</p></div><div><h4 className="text-white font-bold mb-2 flex items-center gap-2"><Anchor className="w-4 h-4 text-cyan-500" /> Puerto de Vigo</h4><p className="text-slate-400 text-sm ml-6">Frigoríficos de Vigo<br/>Puerto Pesquero de Berbés, Dársena 4</p></div><div><h4 className="text-white font-bold mb-2 flex items-center gap-2"><Anchor className="w-4 h-4 text-cyan-500" /> Canarias</h4><p className="text-slate-400 text-sm ml-6">FRIGORIFICO DECOEXA<br/>Muelle pesquero, 38008 Puerto de Las Palmas</p></div></div></div><div className="glass-panel p-10 rounded-[3rem] border border-white/10 hover:border-cyan-500/30 transition-all"><div className="flex items-center gap-4 mb-8"><span className="text-6xl">🇦🇷</span><div><h3 className="text-3xl font-bold text-white">Argentina</h3><p className="text-cyan-400 text-sm uppercase tracking-widest">Origen & Procesamiento</p></div></div><div className="space-y-8"><div><h4 className="text-white font-bold mb-2 flex items-center gap-2"><Factory className="w-4 h-4 text-cyan-500" /> Puerto Rawson</h4><p className="text-slate-400 text-sm ml-6">Av. M. González y S.J.C. Marsengo (9103)<br/>Chubut, Argentina</p><p className="text-slate-400 text-sm ml-6 mt-1">Planta de 35.000 m²</p></div><div><h4 className="text-white font-bold mb-2 flex items-center gap-2"><Factory className="w-4 h-4 text-cyan-500" /> Comodoro Rivadavia</h4><p className="text-slate-400 text-sm ml-6">Las Toninas 636<br/>Chubut, Argentina</p></div></div></div></div>
         </div>
       </section>
-
-      {/* Markets - World Map Section */}
+      
+      {/* Markets */}
       <section id="mercados" className="py-32 bg-[#050505] relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 pointer-events-none"><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div></div>
         <div className="max-w-[1800px] mx-auto px-6 relative z-10">
@@ -391,11 +503,13 @@ const AboutCaboVirgenes = () => {
             <p className="text-gray-400 max-w-2xl mx-auto mb-8">Estructura global integrada. Seleccione una región para explorar nuestras conexiones desde los hubs de Argentina y España.</p>
             <div className="flex flex-wrap justify-center gap-2 mb-8">
               {['Global','América','Europa','Asia','África','Oceanía'].map((region) => {
-                const value = regionMap[region] || 'global';
+                const value = regionMap[region] || region.toLowerCase();
                 return (
                   <button
                     key={region}
-                    onClick={() => setMapView(value)}
+                    onClick={() => {
+                      setMapView(value);
+                    }}
                     className={`px-6 py-2 rounded-full glass-apple text-xs font-bold uppercase hover:bg-white/20 transition-all border border-white/10 ${mapView === value ? 'border-cyan-400 text-cyan-400' : 'text-white'}`}
                   >
                     {region}
@@ -405,9 +519,10 @@ const AboutCaboVirgenes = () => {
             </div>
           </div>
 
-          {/* Map Container using the WorldMap component */}
+          {/* WORLD MAP CONTAINER */}
           <div className="glass-apple rounded-[3rem] p-4 relative shadow-2xl border border-white/10 bg-[#080808] aspect-[16/9] md:aspect-[21/9] overflow-hidden">
-             <div className="w-full h-full rounded-[2.5rem] overflow-hidden bg-[#080808]">
+            <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden bg-[#080808]">
+                {/* COMPONENTE WORLDMAP INTEGRADO */}
                 <WorldMap 
                   region={mapView}
                   hubs={mapHubs}
@@ -415,10 +530,26 @@ const AboutCaboVirgenes = () => {
                   hoveredCountry={hoveredCountry}
                   onHoverCountry={setHoveredCountry}
                 />
-             </div>
+            </div>
           </div>
 
-          {/* Legend / Key Stats */}
+          <div className="mt-12 flex flex-wrap justify-center gap-3 max-w-6xl mx-auto">
+            {COUNTRIES_LIST.map((country, i) => (
+              <span
+                key={i}
+                onMouseEnter={() => setHoveredCountry(country)}
+                onMouseLeave={() => setHoveredCountry(null)}
+                className={`px-4 py-2 rounded-full border text-xs font-medium cursor-pointer transition-all duration-300 ${
+                  hoveredCountry === country
+                    ? 'bg-cyan-500 border-cyan-400 text-[#0f172a] scale-110 shadow-[0_0_15px_rgba(34,211,238,0.5)]'
+                    : 'bg-white/5 border-white/10 text-slate-400 hover:text-white hover:border-white/30'
+                }`}
+              >
+                {country}
+              </span>
+            ))}
+          </div>
+
           <div className="flex justify-center gap-6 mt-12 flex-wrap">
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_10px_#22D3EE]"></span>
@@ -434,7 +565,6 @@ const AboutCaboVirgenes = () => {
 
       <Footer />
 
-      {/* --- MODAL FLOTA --- */}
       {selectedShip && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in" onClick={() => setSelectedShip(null)}>
           <div className="glass-modal w-full max-w-4xl rounded-[2rem] overflow-hidden relative flex flex-col max-h-[90vh] shadow-2xl shadow-cyan-900/30 border border-white/10" onClick={(e) => e.stopPropagation()}>
@@ -511,7 +641,6 @@ const AboutCaboVirgenes = () => {
         </div>
       )}
 
-      {/* --- MODAL PLANTAS --- */}
       {selectedPlant && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in" onClick={() => setSelectedPlant(null)}>
           <div className="glass-modal w-full max-w-4xl rounded-[2rem] overflow-hidden relative flex flex-col max-h-[90vh] shadow-2xl shadow-cyan-900/30 border border-white/10" onClick={(e) => e.stopPropagation()}>
@@ -586,7 +715,6 @@ const AboutCaboVirgenes = () => {
         </div>
       )}
 
-      {/* --- MODAL CONTACTO --- */}
       {isContactModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in" onClick={() => setIsContactModalOpen(false)}>
           <div className="glass-modal w-full max-w-lg rounded-[2rem] p-8 relative shadow-2xl shadow-cyan-900/20 border border-white/10" onClick={(e) => e.stopPropagation()}>
