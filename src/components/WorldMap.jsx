@@ -9,8 +9,13 @@ import {
 } from "react-simple-maps";
 import { geoCentroid } from "d3-geo";
 
-const GEO_URL =
-  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+/*
+ * WorldMap Component
+ * Renderiza el mapa interactivo con soporte para clicks, zoom dinámico y líneas de conexión.
+ * Requiere las dependencias: react-simple-maps, d3-scale, d3-geo
+ */
+
+const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 const WorldMap = memo(function WorldMap({
   center = [0, 20],
@@ -37,11 +42,12 @@ const WorldMap = memo(function WorldMap({
             [-800, -600],
             [800, 600],
           ]}
-          transitionDuration={500}
+          transitionDuration={750} // Transición suave para el zoom
         >
           <Geographies geography={GEO_URL}>
             {({ geographies }) =>
               geographies.map((geo) => {
+                // Normalización de nombres para coincidir con la lista de países
                 const name = geo.properties.name || geo.properties.NAME || "";
                 const isHovered = hoveredCountry === name;
                 const isActive = activeCountry === name;
@@ -51,7 +57,7 @@ const WorldMap = memo(function WorldMap({
                     key={geo.rsmKey}
                     geography={geo}
                     onClick={() => {
-                      // Calculamos el centro geográfico del país al hacer clic
+                      // Calcula el centro del país automáticamente usando d3-geo
                       const centroid = geoCentroid(geo);
                       onCountryClick(name, centroid);
                     }}
@@ -98,13 +104,15 @@ const WorldMap = memo(function WorldMap({
           ))}
 
           {/* Marcadores Fijos (Hubs) */}
+          {/* España */}
           <Marker coordinates={[-4.53, 42.01]}>
             <circle r={4} fill="#fff" stroke="#06b6d4" strokeWidth={2} />
-            <text textAnchor="middle" y={-10} style={{ fontFamily: "system-ui", fill: "#fff", fontSize: "10px" }}>Palencia</text>
+            <text textAnchor="middle" y={-10} style={{ fontFamily: "system-ui", fill: "#fff", fontSize: "10px", fontWeight: "bold" }}>Palencia</text>
           </Marker>
+          {/* Argentina */}
           <Marker coordinates={[-65.10, -43.30]}>
             <circle r={4} fill="#fff" stroke="#06b6d4" strokeWidth={2} />
-            <text textAnchor="middle" y={15} style={{ fontFamily: "system-ui", fill: "#fff", fontSize: "10px" }}>Rawson</text>
+            <text textAnchor="middle" y={15} style={{ fontFamily: "system-ui", fill: "#fff", fontSize: "10px", fontWeight: "bold" }}>Rawson</text>
           </Marker>
 
         </ZoomableGroup>
