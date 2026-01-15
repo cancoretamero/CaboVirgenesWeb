@@ -37,7 +37,7 @@ const WorldMap = memo(function WorldMap({
             [-800, -600],
             [800, 600],
           ]}
-          transitionDuration={500} // Suaviza el movimiento
+          transitionDuration={500}
         >
           <Geographies geography={GEO_URL}>
             {({ geographies }) =>
@@ -51,8 +51,9 @@ const WorldMap = memo(function WorldMap({
                     key={geo.rsmKey}
                     geography={geo}
                     onClick={() => {
+                      // Calculamos el centro geográfico del país al hacer clic
                       const centroid = geoCentroid(geo);
-                      onCountryClick(name, centroid, geo.properties);
+                      onCountryClick(name, centroid);
                     }}
                     onMouseEnter={() => onHoverCountry(name)}
                     onMouseLeave={() => onHoverCountry(null)}
@@ -62,10 +63,11 @@ const WorldMap = memo(function WorldMap({
                         stroke: isActive ? "#fff" : "rgba(255,255,255,0.1)",
                         strokeWidth: isActive ? 1 : 0.5,
                         outline: "none",
-                        transition: "all 0.3s ease"
+                        transition: "all 0.3s ease",
+                        cursor: "pointer"
                       },
                       hover: {
-                        fill: "#06b6d4",
+                        fill: "rgba(34,211,238,0.3)",
                         stroke: "#fff",
                         strokeWidth: 1,
                         outline: "none",
@@ -82,25 +84,27 @@ const WorldMap = memo(function WorldMap({
             }
           </Geographies>
 
-          {/* Líneas dinámicas: solo se muestran si hay un país activo o si se pasan explícitamente */}
+          {/* Líneas de conexión dinámicas */}
           {lines.map((line, i) => (
             <Line
               key={i}
               from={line.from}
               to={line.to}
               stroke="rgba(34, 211, 238, 0.6)"
-              strokeWidth={1.5}
+              strokeWidth={2}
               strokeLinecap="round"
-              className="animate-draw" // Podríamos añadir CSS para animar esto
+              style={{ filter: "drop-shadow(0 0 2px rgba(6,182,212,0.5))" }}
             />
           ))}
 
           {/* Marcadores Fijos (Hubs) */}
           <Marker coordinates={[-4.53, 42.01]}>
             <circle r={4} fill="#fff" stroke="#06b6d4" strokeWidth={2} />
+            <text textAnchor="middle" y={-10} style={{ fontFamily: "system-ui", fill: "#fff", fontSize: "10px" }}>Palencia</text>
           </Marker>
           <Marker coordinates={[-65.10, -43.30]}>
             <circle r={4} fill="#fff" stroke="#06b6d4" strokeWidth={2} />
+            <text textAnchor="middle" y={15} style={{ fontFamily: "system-ui", fill: "#fff", fontSize: "10px" }}>Rawson</text>
           </Marker>
 
         </ZoomableGroup>
