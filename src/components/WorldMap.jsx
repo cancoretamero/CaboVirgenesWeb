@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from "react";
+import React, { memo } from "react";
 import {
   ComposableMap,
   Geographies,
@@ -7,52 +7,20 @@ import {
   Line,
   ZoomableGroup,
 } from "react-simple-maps";
+import { geoCentroid } from "d3-geo";
 
-/**
- * WorldMap (react-simple-maps)
- * - Renderiza países reales (TopoJSON)
- * - Zoom/pan (ZoomableGroup)
- * - Marcadores (hubs)
- * - Líneas de conexión (arcos simples)
- *
- * Fuente mapa: world-atlas (TopoJSON)
- */
 const GEO_URL =
   "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
 
 const WorldMap = memo(function WorldMap({
-  region = "global",
-  hubs = [],
-  connections = [],
+  center = [0, 20],
+  zoom = 1,
+  onCountryClick = () => {},
   hoveredCountry = null,
   onHoverCountry = () => {},
+  activeCountry = null,
+  lines = [] 
 }) {
-  const regionView = useMemo(() => {
-    // center: [lon, lat]
-    // zoom: number
-    const views = {
-      global: { center: [0, 15], zoom: 1 },
-      nam: { center: [-100, 40], zoom: 1.8 },
-      sam: { center: [-60, -20], zoom: 1.9 },
-      eur: { center: [15, 50], zoom: 2.3 },
-      asia: { center: [90, 35], zoom: 1.9 },
-      afr: { center: [20, 5], zoom: 2.0 },
-      oce: { center: [140, -25], zoom: 2.4 },
-    };
-    return views[region] || views.global;
-  }, [region]);
-
-  const safeConnections = useMemo(() => {
-    // Evitar duplicados exactos por si se repiten
-    const seen = new Set();
-    return connections.filter((c) => {
-      const k = `${c.from?.[0]}:${c.from?.[1]}-${c.to?.[0]}:${c.to?.[1]}`;
-      if (seen.has(k)) return false;
-      seen.add(k);
-      return true;
-    });
-  }, [connections]);
-
   return (
     <div className="relative w-full h-full">
       <ComposableMap
@@ -61,46 +29,50 @@ const WorldMap = memo(function WorldMap({
         style={{ width: "100%", height: "100%" }}
       >
         <ZoomableGroup
-          center={regionView.center}
-          zoom={regionView.zoom}
+          center={center}
+          zoom={zoom}
           minZoom={1}
           maxZoom={8}
           translateExtent={[
-            [-1200, -800],
-            [1200, 800],
+            [-800, -600],
+            [800, 600],
           ]}
+          transitionDuration={500} // Suaviza el movimiento
         >
           <Geographies geography={GEO_URL}>
             {({ geographies }) =>
               geographies.map((geo) => {
-                const name =
-                  geo?.properties?.name ||
-                  geo?.properties?.NAME ||
-                  geo?.properties?.ADMIN ||
-                  "";
-                const isHovered =
-                  hoveredCountry && name && hoveredCountry === name;
+                const name = geo.properties.name || geo.properties.NAME || "";
+                const isHovered = hoveredCountry === name;
+                const isActive = activeCountry === name;
 
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onMouseEnter={() => name && onHoverCountry(name)}
+                    onClick={() => {
+                      const centroid = geoCentroid(geo);
+                      onCountryClick(name, centroid, geo.properties);
+                    }}
+                    onMouseEnter={() => onHoverCountry(name)}
                     onMouseLeave={() => onHoverCountry(null)}
                     style={{
                       default: {
-                        fill: isHovered ? "rgba(34,211,238,0.35)" : "rgba(255,255,255,0.10)",
-                        stroke: "rgba(255,255,255,0.10)",
+                        fill: isActive ? "#06b6d4" : isHovered ? "rgba(34,211,238,0.3)" : "rgba(255,255,255,0.1)",
+                        stroke: isActive ? "#fff" : "rgba(255,255,255,0.1)",
+                        strokeWidth: isActive ? 1 : 0.5,
                         outline: "none",
+                        transition: "all 0.3s ease"
                       },
                       hover: {
-                        fill: "rgba(34,211,238,0.35)",
-                        stroke: "rgba(255,255,255,0.16)",
+                        fill: "#06b6d4",
+                        stroke: "#fff",
+                        strokeWidth: 1,
                         outline: "none",
+                        cursor: "pointer"
                       },
                       pressed: {
-                        fill: "rgba(34,211,238,0.45)",
-                        stroke: "rgba(255,255,255,0.16)",
+                        fill: "#0891b2",
                         outline: "none",
                       },
                     }}
@@ -110,25 +82,27 @@ const WorldMap = memo(function WorldMap({
             }
           </Geographies>
 
-          {/* Líneas de conexión */}
-          {safeConnections.map((c, i) => (
+          {/* Líneas dinámicas: solo se muestran si hay un país activo o si se pasan explícitamente */}
+          {lines.map((line, i) => (
             <Line
-              key={`${i}-${c.from?.join(",")}-${c.to?.join(",")}`}
-              from={c.from}
-              to={c.to}
-              stroke="rgba(34,211,238,0.55)"
-              strokeWidth={1}
+              key={i}
+              from={line.from}
+              to={line.to}
+              stroke="rgba(34, 211, 238, 0.6)"
+              strokeWidth={1.5}
               strokeLinecap="round"
+              className="animate-draw" // Podríamos añadir CSS para animar esto
             />
           ))}
 
-          {/* Hubs */}
-          {hubs.map((h, i) => (
-            <Marker key={`${h.name}-${i}`} coordinates={h.coordinates}>
-              <circle r={5} fill="rgba(34,211,238,0.95)" />
-              <circle r={10} fill="rgba(34,211,238,0.18)" />
-            </Marker>
-          ))}
+          {/* Marcadores Fijos (Hubs) */}
+          <Marker coordinates={[-4.53, 42.01]}>
+            <circle r={4} fill="#fff" stroke="#06b6d4" strokeWidth={2} />
+          </Marker>
+          <Marker coordinates={[-65.10, -43.30]}>
+            <circle r={4} fill="#fff" stroke="#06b6d4" strokeWidth={2} />
+          </Marker>
+
         </ZoomableGroup>
       </ComposableMap>
     </div>
