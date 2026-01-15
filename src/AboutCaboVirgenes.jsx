@@ -21,34 +21,39 @@ import {
   ZoomIn,
   ZoomOut,
   Fish,
-  ShoppingBag,
-  Globe
+  ShoppingBag
 } from 'lucide-react';
 
+/*
+ * AboutCaboVirgenes
+ * Página principal de "Quiénes Somos".
+ * Integra historia, flota, plantas y mapa interactivo global.
+ */
+
 const AboutCaboVirgenes = () => {
-  // --- Estados de Modales y Navegación ---
+  // --- Estados de la UI ---
   const [selectedShip, setSelectedShip] = useState(null);
   const [selectedPlant, setSelectedPlant] = useState(null);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [activeModalTab, setActiveModalTab] = useState('info');
   
-  // --- Estados del Mapa Interactivo ---
+  // --- Estados del Mapa ---
   const [hoveredCountry, setHoveredCountry] = useState(null);
   const [mapState, setMapState] = useState({ center: [0, 20], zoom: 1 });
   const [selectedCountryInfo, setSelectedCountryInfo] = useState(null);
 
-  // --- Datos de Mercado (Info del Widget) ---
+  // --- Datos de Mercado Interactivos (Info para el Widget) ---
   const MARKET_DATA = {
     'Spain': { products: ['Langostino Austral', 'Merluza', 'Gambón'], volume: 'Hub Principal', type: 'Mercado Doméstico' },
     'Argentina': { products: ['Origen', 'Procesado'], volume: 'Origen', type: 'Producción' },
-    'United States': { products: ['Colas de Langostino', 'Valor Añadido'], volume: 'Alto Volumen', type: 'Exportación' },
+    'United States of America': { products: ['Colas de Langostino', 'Valor Añadido'], volume: 'Alto Volumen', type: 'Exportación' },
     'China': { products: ['Langostino Entero L1/L2'], volume: 'Gran Escala', type: 'Exportación' },
     'Italy': { products: ['Langostino', 'Merluza'], volume: 'Premium', type: 'Exportación' },
     'France': { products: ['Langostino Cocido', 'Fresco'], volume: 'Estable', type: 'Exportación' },
     'Japan': { products: ['Langostino Sashimi Quality'], volume: 'Premium', type: 'Exportación' },
     'South Africa': { products: ['Langostino Entero'], volume: 'Emergente', type: 'Distribución' },
     'Australia': { products: ['Valor Añadido'], volume: 'Nicho', type: 'Exportación' },
-    // Default para otros
+    // Configuración por defecto para países sin datos específicos
     'default': { products: ['Langostino Congelado'], volume: 'Emergente', type: 'Distribución Global' }
   };
 
@@ -57,18 +62,21 @@ const AboutCaboVirgenes = () => {
     ARGENTINA: [-65.10, -43.30]
   };
 
-  // Líneas dinámicas: conecta el país seleccionado con su Hub más cercano
+  // Calcula las líneas de conexión dinámicamente desde el hub más cercano
   const mapLines = useMemo(() => {
     if (!selectedCountryInfo) return [];
-    // Si longitud < -30 (América) usa Argentina, si no España
+    // Si la longitud es menor a -30 (América), conecta con Argentina, si no con España
     const targetLon = selectedCountryInfo.coords[0];
     const source = targetLon < -30 ? HUBS.ARGENTINA : HUBS.SPAIN;
     return [{ from: source, to: selectedCountryInfo.coords }];
   }, [selectedCountryInfo]);
 
-  // Manejador de click en país: Zoom + Mostrar Widget
+  // Maneja el clic en un país: hace zoom y muestra el widget
   const handleCountryClick = (name, centroid) => {
+    // Ajusta el zoom y centra el mapa en el país clicado
     setMapState({ center: centroid, zoom: 4 });
+    
+    // Obtiene datos del país o usa los por defecto
     const data = MARKET_DATA[name] || MARKET_DATA['default'];
     setSelectedCountryInfo({
       name,
@@ -77,7 +85,7 @@ const AboutCaboVirgenes = () => {
     });
   };
 
-  // Manejador de botones de región
+  // Maneja los botones de filtro de región
   const handleRegionChange = (region) => {
     const views = {
       'global': { center: [0, 20], zoom: 1 },
@@ -89,84 +97,149 @@ const AboutCaboVirgenes = () => {
     };
     const view = views[region] || views['global'];
     setMapState(view);
-    setSelectedCountryInfo(null); // Ocultar widget al cambiar de región
+    setSelectedCountryInfo(null); // Oculta el widget al cambiar de vista
   };
 
-  // --- Datos Estáticos ---
+  // --- Datos Estáticos (Historia, Flota, Plantas) ---
   const HISTORY_DATA = [
-    { year: 'Origen', title: 'La Unión de Experiencia', text: 'Cabo Vírgenes surge de la unión de más de 48 años de experiencia y conocimientos del sector de los actuales gerentes, Pedro Mielgo en España, y Eduardo del Rio en Argentina. Nuestra actividad se basa en una alianza Hispano/Argentina a través de un sistema de integración vertical.' },
-    { year: '2008', title: 'Nace la Alianza', text: 'Se estableció dicha alianza Hispano/Argentina y se comienza a operar desde Argentina con dos barcos fresqueros. También, Argentina adquiere una planta en Rawson al Grupo Pescanova, realizando una gran obra de reformas e implantación de las últimas tecnologías.' },
-    { year: '2012', title: 'Expansión Internacional', text: 'El 18 de enero del 2012, se establece en Palencia (España), Cabo Vírgenes España, S.L, que se convierte en el perfecto aliado de Argentina, pasando a ser su principal centro de operaciones y logístico a nivel internacional.' },
+    { year: 'Origen', title: 'La Unión de Experiencia', text: 'Cabo Vírgenes surge de la unión de más de 48 años de experiencia y conocimientos del sector de los actuales gerentes, Pedro Mielgo en España, y Eduardo del Rio en Argentina.' },
+    { year: '2008', title: 'Nace la Alianza', text: 'Se estableció dicha alianza Hispano/Argentina y se comienza a operar desde Argentina con dos barcos fresqueros: el Cabo Vírgenes y el Nueva Esperanza.' },
+    { year: '2012', title: 'Expansión Internacional', text: 'El 18 de enero del 2012, se establece en Palencia (España), Cabo Vírgenes España, S.L, que se convierte en el perfecto aliado de Argentina.' },
     { year: '2016', title: 'Flota Tangonera', text: 'Argentina comienza a operar con dos barcos tangoneros congeladores: Mar de Oro y Anita Álvarez con una capacidad de pesca de 1400 toneladas.' },
-    { year: '2019', title: 'Innovación Naval', text: 'En marzo se produce la botadura del Luca Santino, primer barco fresquero de la flota argentina con hielo líquido. También comienza a operar un barco potero, el Orión 2.' },
-    { year: '2022', title: 'El Gigante Atón', text: 'Se produce la botadura de un nuevo barco tangonero: el Atón. Por parte de España se amplía la planta de Palencia y se construye un Frigorífico que aumentará a más de 5.500 ton la capacidad de almacenamiento.' },
-    { year: 'Futuro', title: 'Expansión Continua', text: 'El negocio está en plena expansión. La capacidad de producción diaria se encuentra por encima de las 120 toneladas con crecimientos anuales que superan el 150%.' }
+    { year: '2017', title: 'Valor Añadido', text: 'España construye la planta de reprocesado en Palencia, complementando la producción con líneas de Skin y Doy Pack.' },
+    { year: '2019', title: 'Innovación Naval', text: 'Botadura del Luca Santino, primer barco fresquero de la flota argentina con hielo líquido. Comienza a operar el potero Orión 2.' },
+    { year: '2020', title: 'Nuevos Horizontes', text: 'Argentina incorpora una planta en Comodoro Rivadavia y el buque Perla Negra. Comienza a operar el Espartano.' },
+    { year: '2022', title: 'El Gigante Atón', text: 'Se produce la botadura del Atón. Se amplía la planta de Palencia y se construye un nuevo Frigorífico.' },
+    { year: 'Futuro', title: 'Expansión Continua', text: 'El negocio está en plena expansión. Capacidad de producción diaria >120 toneladas.' }
   ];
 
   const FLOTA_FRESQUERA = [
-    { id: 'f1', name: 'Cabo Vírgenes', type: 'Fresquero Costero', img: 'https://images.unsplash.com/photo-1544256277-c956403239a5?q=80&w=800', specs: { eslora: '28 m', manga: '7 m', bodega: 'Fresca', motor: '1200 HP' }, video: 'https://media.istockphoto.com/id/1169273299/video/fishing-boat-sailing-in-the-atlantic-ocean.mp4?s=mp4-640x640-is&k=20&c=L_qJOV9J9ZtZ7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z', location: { lat: '-43.300', lng: '-65.102' } },
-    { id: 'f2', name: 'Nueva Esperanza', type: 'Fresquero Costero', img: 'https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?q=80&w=800', specs: { eslora: '26 m', manga: '6.5 m', bodega: 'Fresca', motor: '1100 HP' } },
-    { id: 'f3', name: 'Luca Santino', type: 'Fresquero Hielo Líquido', img: 'https://images.unsplash.com/photo-1612686635542-2244f734544e?q=80&w=800', specs: { eslora: '32 m', manga: '8 m', sistema: 'Hielo Líquido', motor: '1500 HP' } },
-    { id: 'f4', name: 'Espartano', type: 'Proa Invertida', img: 'https://images.unsplash.com/photo-1559798402-9ae19f032232?q=80&w=800', specs: { diseño: 'Astillero Cortessi', innovacion: 'Estabilidad', eslora: '29 m' } }
+    {
+      id: 'f1', name: 'Cabo Vírgenes', type: 'Fresquero Costero',
+      img: 'https://images.unsplash.com/photo-1544256277-c956403239a5?auto=format&fit=crop&w=800',
+      specs: { eslora: '28 m', manga: '7 m', bodega: 'Fresca', motor: '1200 HP' },
+      video: 'https://media.istockphoto.com/id/1169273299/video/fishing-boat-sailing-in-the-atlantic-ocean.mp4?s=mp4-640x640-is&k=20&c=L_qJOV9J9ZtZ7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z',
+      location: { lat: '-43.300', lng: '-65.102', label: 'Puerto Rawson' }
+    },
+    {
+      id: 'f2', name: 'Nueva Esperanza', type: 'Fresquero Costero',
+      img: 'https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?auto=format&fit=crop&w=800',
+      specs: { eslora: '26 m', manga: '6.5 m', bodega: 'Fresca', motor: '1100 HP' },
+      location: { lat: '-43.350', lng: '-65.050', label: 'Zona Pesca' }
+    },
+    {
+      id: 'f3', name: 'Luca Santino', type: 'Fresquero Hielo Líquido',
+      img: 'https://images.unsplash.com/photo-1612686635542-2244f734544e?auto=format&fit=crop&w=800',
+      specs: { eslora: '32 m', manga: '8 m', sistema: 'Hielo Líquido', motor: '1500 HP' },
+      location: { lat: '-43.300', lng: '-65.102', label: 'Puerto Rawson' }
+    },
+    {
+      id: 'f4', name: 'Espartano', type: 'Proa Invertida',
+      img: 'https://images.unsplash.com/photo-1559798402-9ae19f032232?auto=format&fit=crop&w=800',
+      specs: { diseño: 'Astillero Cortessi', innovacion: 'Estabilidad', tipo: 'Polivalente', eslora: '29 m' },
+      location: { lat: '-43.400', lng: '-65.000', label: 'Zona Pesca' }
+    }
   ];
 
   const FLOTA_CONGELADORA = [
-    { id: 'c1', name: 'Atón', type: 'Tangonero Moderno', img: 'https://images.unsplash.com/photo-1516216628859-9bccecab13ca?q=80&w=800', specs: { año: '2022', puerto: 'Madryn', eslora: '42.5 m', capacidad: '180 Ton' }, video: 'https://media.istockphoto.com/id/1169273299/video/fishing-boat-sailing-in-the-atlantic-ocean.mp4?s=mp4-640x640-is&k=20&c=L_qJOV9J9ZtZ7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z7Z' },
-    { id: 'c2', name: 'Mar de Oro', type: 'Tangonero Congelador', img: 'https://images.unsplash.com/photo-1589191995092-668887805631?q=80&w=800', specs: { capacidad: '1400 Ton', puerto: 'Madryn', eslora: '40 m' } },
-    { id: 'c3', name: 'Anita Álvarez', type: 'Tangonero Congelador', img: 'https://images.unsplash.com/photo-1552825716-2795fa5ab941?q=80&w=800', specs: { capacidad: '1400 Ton', puerto: 'Madryn', eslora: '41 m' } },
-    { id: 'c4', name: 'Orión 2', type: 'Potero', img: 'https://images.unsplash.com/photo-1502126233261-39578ae1f544?q=80&w=800', specs: { especie: 'Calamar Illex', sistema: 'Potera', eslora: '45 m' } }
+    {
+      id: 'c1', name: 'Atón', type: 'Tangonero Moderno',
+      img: 'https://images.unsplash.com/photo-1516216628859-9bccecab13ca?auto=format&fit=crop&w=800',
+      specs: { año: '2022', puerto: 'Madryn', eslora: '42.5 m', capacidad: '180 Ton' },
+      location: { lat: '-42.700', lng: '-60.500', label: 'Alta Mar' }
+    },
+    {
+      id: 'c2', name: 'Mar de Oro', type: 'Tangonero Congelador',
+      img: 'https://images.unsplash.com/photo-1589191995092-668887805631?auto=format&fit=crop&w=800',
+      specs: { capacidad: '1400 Ton', puerto: 'Madryn', tipo: 'Congelador', eslora: '40 m' },
+      location: { lat: '-42.500', lng: '-61.000', label: 'Alta Mar' }
+    },
+    {
+      id: 'c3', name: 'Anita Álvarez', type: 'Tangonero Congelador',
+      img: 'https://images.unsplash.com/photo-1552825716-2795fa5ab941?auto=format&fit=crop&w=800',
+      specs: { capacidad: '1400 Ton', puerto: 'Madryn', tipo: 'Congelador', eslora: '41 m' },
+      location: { lat: '-42.000', lng: '-60.000', label: 'Alta Mar' }
+    },
+    {
+      id: 'c4', name: 'Orión 2', type: 'Potero',
+      img: 'https://images.unsplash.com/photo-1502126233261-39578ae1f544?auto=format&fit=crop&w=800',
+      specs: { especie: 'Calamar Illex', sistema: 'Potera', luces: 'LED', eslora: '45 m' },
+      location: { lat: '-44.000', lng: '-62.000', label: 'Alta Mar' }
+    }
   ];
 
   const PLANTS_DATA = [
-    { id: 'p1', title: 'Puerto Rawson', type: 'Procesado Fresco', desc: 'Ubicada a solo 400 metros del puerto, asegurando una llegada inmediata del producto.', img: 'https://images.unsplash.com/photo-1533235652514-c36399182390?q=80&w=800', features: ['Recepción Inmediata', 'Clasificación Automática', 'Túneles de Congelación'], location: { address: 'Av. M. González y S.J.C. Marsengo', city: 'Puerto Rawson, Argentina' } },
-    { id: 'p2', title: 'Palencia (España)', type: 'Reprocesado & Logística', desc: 'Centro logístico europeo con 4.600 m². Capacidad de producción de 8.000 toneladas.', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800', features: ['Reproceso automático', 'Cocción moderna', 'Líneas Skin & Doy Pack'], location: { address: 'Calle Torneros 18', city: 'Palencia, España' } },
-    { id: 'p3', title: 'Comodoro Rivadavia', type: 'Merluza & Langostino', desc: 'Planta especializada en procesado y reprocesado. Ampliación estratégica para Merluza.', img: 'https://images.unsplash.com/photo-1598514930190-3cb83e449265?q=80&w=800', features: ['Procesado Merluza', 'Congelación Rápida', 'Fileteado'], location: { address: 'Las Toninas 636', city: 'Comodoro Rivadavia' } }
+    {
+      id: 'p1', title: 'Puerto Rawson', type: 'Procesado Fresco',
+      desc: 'Ubicada a solo 400 metros del puerto, asegurando una llegada inmediata del producto. Equipada con tecnología punta, fábricas de hielo en escama y líquido.',
+      img: 'https://images.unsplash.com/photo-1533235652514-c36399182390?auto=format&fit=crop&w=800',
+      features: ['Recepción Inmediata', 'Clasificación Automática', 'Túneles de Congelación', 'Sala de Envasado'],
+      gallery: ['https://images.unsplash.com/photo-1628186743158-73236e81031d?auto=format&fit=crop&w=800', 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800'],
+      location: { address: 'Av. M. González y S.J.C. Marsengo (9103)', city: 'Puerto Rawson, Argentina' }
+    },
+    {
+      id: 'p2', title: 'Palencia (España)', type: 'Reprocesado & Logística',
+      desc: 'Centro logístico europeo con 4.600 m². Capacidad de producción de 8.000 toneladas y almacenamiento de 5.500 ton (-27ºC). Especialistas en valor añadido.',
+      img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800',
+      features: ['Máquinas de reproceso', 'Sistema de cocción', 'Túnel continuo IQF', 'Líneas Skin y Doy Pack'],
+      gallery: ['https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=800'],
+      location: { address: 'Calle Torneros 18, Polígono San Antolín', city: 'Palencia, España' }
+    },
+    {
+      id: 'p3', title: 'Comodoro Rivadavia', type: 'Merluza & Langostino',
+      desc: 'Planta especializada en procesado y reprocesado. Ampliación estratégica para la línea de Merluza Argentina, mejorando la competitividad y oferta global.',
+      img: 'https://images.unsplash.com/photo-1598514930190-3cb83e449265?auto=format&fit=crop&w=800',
+      features: ['Procesado de Merluza', 'Congelación Rápida', 'Línea de Fileteado'],
+      gallery: ['https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800'],
+      location: { address: 'Las Toninas 636', city: 'Comodoro Rivadavia, Argentina' }
+    }
   ];
 
-  const COUNTRIES_LIST = ['Albania', 'Alemania', 'Angola', 'Arabia Saudita', 'Argelia', 'Argentina', 'Austria', 'Australia', 'Bélgica', 'Bosnia', 'Bulgaria', 'Canadá', 'China', 'Corea del Sur', 'Croacia', 'Dinamarca', 'Egipto', 'Emiratos Árabes', 'Estados Unidos', 'España', 'Francia', 'Grecia', 'Holanda', 'Hong Kong', 'India', 'Indonesia', 'Irlanda', 'Israel', 'Italia', 'Japón', 'Marruecos', 'Noruega', 'Polonia', 'Portugal', 'Reino Unido', 'Rusia', 'Sudáfrica', 'Suecia', 'Tailandia', 'Turquía', 'Vietnam'];
+  // Lista de países para la nube de etiquetas
+  const COUNTRIES_LIST = [
+    'Albania', 'Alemania', 'Angola', 'Arabia Saudita', 'Argelia', 'Argentina', 'Austria', 'Australia',
+    'Bélgica', 'Bosnia', 'Bulgaria', 'Canadá', 'Chipre', 'China', 'Corea del Sur', 'Costa Rica',
+    'Croacia', 'Dinamarca', 'Eslovaquia', 'Eslovenia', 'Egipto', 'Emiratos Árabes', 'Estados Unidos',
+    'España', 'Estonia', 'Finlandia', 'Francia', 'Grecia', 'Guatemala', 'Holanda', 'Hong Kong',
+    'Honduras', 'Hungría', 'India', 'Indonesia', 'Irlanda', 'Islandia', 'Israel', 'Italia', 'Japón',
+    'Kuwait', 'Letonia', 'Lituania', 'Luxemburgo', 'Malta', 'Macedonia', 'Malasia', 'Marruecos',
+    'Mozambique', 'Mongolia', 'Montenegro', 'Myanmar', 'Noruega', 'Nueva Zelanda', 'Polonia',
+    'Portugal', 'Perú', 'Reino Unido', 'Rep. Dominicana', 'Rep. Checa', 'Rumanía', 'Rusia', 'Serbia',
+    'Slovenia', 'Sudáfrica', 'Suecia', 'Tailandia', 'Taiwán', 'Turquía', 'Ucrania', 'Uruguay', 'Vietnam'
+  ];
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white font-['Poppins'] selection:bg-cyan-500 selection:text-white overflow-x-hidden">
-      {/* Estilos globales y utilidades */}
+      {/* --- ESTILOS GLOBALES --- */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
         .font-poppins { font-family: 'Poppins', sans-serif; }
         .font-serif { font-family: 'Playfair Display', serif; }
+        
         .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.05); }
         .glass-modal { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
         .glass-apple { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
         
-        /* Animación para el widget de cristal */
+        /* Animación para el widget */
         @keyframes float-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-float-up { animation: float-up 0.5s ease-out forwards; }
+        
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
 
-        /* Estilos específicos del NavBar para que sea igual al home */
+        /* Forzar transparencia del NavBar */
         .glass-nav {
-          background-color: rgba(255, 255, 255, 0.25);
+          background-color: rgba(255, 255, 255, 0.25) !important;
           backdrop-filter: blur(4px) saturate(180%);
-          -webkit-backdrop-filter: blur(4px) saturate(180%);
-          border-radius: 20px;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-        }
-        .glass-submenu {
-          background-color: rgba(255, 255, 255, 0.55);
-          backdrop-filter: blur(1px) saturate(180%);
-          -webkit-backdrop-filter: blur(1px) saturate(180%);
-          border-radius: 10px;
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.37);
         }
       `}</style>
       
-      {/* NavBar (Posición absoluta para transparencia real) */}
-      <div className="absolute top-0 left-0 w-full z-50">
+      {/* NavBar: Posición absoluta para overlay transparente */}
+      <div className="absolute top-0 w-full z-50">
         <NavBar onContactClick={() => setIsContactModalOpen(true)} />
       </div>
       
-      {/* Header */}
+      {/* --- HEADER --- */}
       <div className="relative pt-48 pb-32 px-6 overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-cyan-900/10 rounded-full blur-[120px]"></div>
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[120px]"></div>
@@ -177,7 +250,7 @@ const AboutCaboVirgenes = () => {
         </div>
       </div>
 
-      {/* History */}
+      {/* --- HISTORIA --- */}
       <section id="historia" className="py-24 bg-[#0a1120] relative border-t border-white/5">
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto space-y-12">
@@ -198,18 +271,18 @@ const AboutCaboVirgenes = () => {
         </div>
       </section>
 
-      {/* Separator */}
+      {/* Separador de Ola */}
       <div className="relative w-full -mb-1 z-10 pointer-events-none bg-[#0a1120]">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-auto block fill-[#0f172a]"><path fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
       </div>
 
-      {/* Fleet */}
+      {/* --- FLOTA --- */}
       <section id="flota" className="py-24 bg-[#0f172a] relative">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <span className="text-cyan-400 font-bold tracking-[0.2em] text-xs uppercase mb-4 block">Nuestra Flota</span>
             <h2 className="text-4xl font-light text-white mb-6">Operativa en FAO 41</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">Contamos con una flota propia que cumple con la más estricta reglamentación internacional en cuanto a conservación de especies y medio ambiente.</p>
+            <p className="text-slate-400 max-w-2xl mx-auto">Contamos con una flota propia que cumple con la más estricta reglamentación internacional.</p>
           </div>
           
           <div className="mb-20">
@@ -268,28 +341,26 @@ const AboutCaboVirgenes = () => {
         </div>
       </section>
 
-      {/* Separator */}
       <div className="relative w-full -mt-1 z-10 pointer-events-none bg-slate-50"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-auto block fill-[#0a1120]"><path fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg></div>
 
-      {/* Plants */}
+      {/* --- PLANTAS --- */}
       <section id="plantas" className="py-24 bg-slate-50 relative">
         <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-16"><span className="text-cyan-600 font-bold tracking-[0.2em] text-xs uppercase mb-4 inline-block px-4 py-2 rounded-full bg-cyan-50 border border-cyan-200">Infraestructura</span><h2 className="text-4xl md:text-5xl font-light text-[#0f172a] mb-6">Nuestras Plantas</h2><p className="text-slate-600 font-light max-w-2xl mx-auto text-lg">Tecnología de punta en origen y destino para garantizar la máxima calidad.</p></div>
+          <div className="text-center mb-16"><span className="text-cyan-600 font-bold tracking-[0.2em] text-xs uppercase mb-4 inline-block px-4 py-2 rounded-full bg-cyan-50 border border-cyan-200">Infraestructura</span><h2 className="text-4xl md:text-5xl font-light text-[#0f172a] mb-6">Nuestras Plantas</h2><p className="text-slate-600 font-light max-w-2xl mx-auto text-lg">Tecnología de punta en origen y destino.</p></div>
           <div className="space-y-24">
             {PLANTS_DATA.map((plant, index) => (
               <div key={plant.id} className="grid lg:grid-cols-2 gap-12 items-center group">
-                <div className={`order-2 ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}><div className="flex items-center gap-3 mb-6">{plant.id === 'p2' ? <Warehouse className="w-8 h-8 text-cyan-600" /> : <Factory className="w-8 h-8 text-cyan-600" />}<h3 className="text-3xl font-bold text-[#0f172a]">{plant.title}</h3></div><p className="text-slate-600 leading-relaxed mb-6">{plant.desc}</p><div className="grid grid-cols-2 gap-4 mb-8">{plant.features.slice(0, 4).map((feature, i) => (<div key={i} className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-cyan-600" /><span className="text-sm text-slate-700 font-medium">{feature}</span></div>))}</div><button onClick={() => setSelectedPlant(plant)} className="inline-flex items-center gap-2 bg-[#0f172a] text-white px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-cyan-600 transition-all shadow-lg hover:shadow-cyan-600/30">Ver Instalaciones <ArrowRight className="w-4 h-4" /></button></div>
-                <div className={`order-1 ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'} relative h-[400px] rounded-[3rem] overflow-hidden shadow-2xl cursor-pointer`} onClick={() => setSelectedPlant(plant)}><img src={plant.img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt={plant.title} /><div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><div className="bg-white/10 backdrop-blur-md p-4 rounded-full border border-white/20"><Play className="w-8 h-8 text-white fill-current" /></div></div></div>
+                <div className={`order-2 ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}><div className="flex items-center gap-3 mb-6">{plant.id === 'p2' ? <Warehouse className="w-8 h-8 text-cyan-600" /> : <Factory className="w-8 h-8 text-cyan-600" />}<h3 className="text-3xl font-bold text-[#0f172a]">{plant.title}</h3></div><p className="text-slate-600 leading-relaxed mb-6">{plant.desc}</p><div className="grid grid-cols-2 gap-4 mb-8">{plant.features.slice(0, 4).map((feature, i) => (<div key={i} className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-cyan-600" /><span className="text-sm text-slate-700 font-medium">{feature}</span></div>))}</div><button onClick={() => handleOpenPlantModal(plant)} className="inline-flex items-center gap-2 bg-[#0f172a] text-white px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-cyan-600 transition-all shadow-lg hover:shadow-cyan-600/30">Ver Instalaciones <ArrowRight className="w-4 h-4" /></button></div>
+                <div className={`order-1 ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'} relative h-[400px] rounded-[3rem] overflow-hidden shadow-2xl cursor-pointer`} onClick={() => handleOpenPlantModal(plant)}><img src={plant.img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt={plant.title} /><div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"><div className="bg-white/10 backdrop-blur-md p-4 rounded-full border border-white/20"><Play className="w-8 h-8 text-white fill-current" /></div></div></div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Separator to location */}
       <div className="relative w-full -mt-1 z-10 pointer-events-none bg-slate-50"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full h-auto block fill-[#0a1120]"><path fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg></div>
 
-      {/* Location */}
+      {/* --- UBICACIÓN --- */}
       <section id="ubicacion" className="py-24 bg-[#0a1120] relative">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl font-light text-white mb-16 text-center">Dónde Estamos</h2>
@@ -297,13 +368,13 @@ const AboutCaboVirgenes = () => {
         </div>
       </section>
 
-      {/* Markets - World Map Section */}
+      {/* --- MERCADOS (MAPA INTERACTIVO) --- */}
       <section id="mercados" className="py-32 bg-[#050505] relative overflow-hidden">
         <div className="max-w-[1800px] mx-auto px-6 relative z-10">
           <div className="text-center mb-12">
             <span className="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-4 block">Red Operativa Global</span>
             <h2 className="font-serif text-5xl md:text-6xl font-bold text-white mb-6">Conectando con el Mundo</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto mb-8">Estructura global integrada. Seleccione una región para explorar nuestras conexiones desde los hubs de Argentina y España.</p>
+            <p className="text-gray-400 max-w-2xl mx-auto mb-8">Estructura global integrada. Seleccione una región para explorar nuestras conexiones.</p>
             <div className="flex flex-wrap justify-center gap-2 mb-8">
               {['Global','América','Europa','Asia','África','Oceanía'].map((region) => {
                 const value = region === 'Global' ? 'global' : region === 'América' ? 'nam' : region.slice(0,3).toLowerCase();
@@ -322,7 +393,7 @@ const AboutCaboVirgenes = () => {
 
           <div className="glass-apple rounded-[3rem] p-4 relative shadow-2xl border border-white/10 bg-[#080808] aspect-[16/9] md:aspect-[21/9] overflow-hidden">
              <div className="w-full h-full rounded-[2.5rem] overflow-hidden bg-[#080808]">
-                {/* Componente de Mapa Interactivo */}
+                {/* --- COMPONENTE DE MAPA --- */}
                 <WorldMap 
                   center={mapState.center}
                   zoom={mapState.zoom}
@@ -333,7 +404,7 @@ const AboutCaboVirgenes = () => {
                   lines={mapLines}
                 />
 
-                {/* WIDGET LIQUID GLASS (Info del país seleccionado) */}
+                {/* --- WIDGET LIQUID GLASS (Info del país) --- */}
                 {selectedCountryInfo && (
                   <div className="absolute bottom-8 left-8 z-50 animate-float-up max-w-sm w-full">
                     <div className="glass-modal rounded-3xl p-6 border border-white/20 backdrop-blur-xl bg-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]">
@@ -364,7 +435,7 @@ const AboutCaboVirgenes = () => {
                   </div>
                 )}
 
-                {/* Controles de Zoom Manual */}
+                {/* Controles de Zoom */}
                 <div className="absolute top-8 right-8 flex flex-col gap-2">
                   <button onClick={() => setMapState(prev => ({ ...prev, zoom: prev.zoom * 1.2 }))} className="w-10 h-10 rounded-full glass-apple flex items-center justify-center text-white hover:bg-white/20 transition-all"><ZoomIn className="w-4 h-4" /></button>
                   <button onClick={() => setMapState(prev => ({ ...prev, zoom: prev.zoom / 1.2 }))} className="w-10 h-10 rounded-full glass-apple flex items-center justify-center text-white hover:bg-white/20 transition-all"><ZoomOut className="w-4 h-4" /></button>
@@ -372,11 +443,16 @@ const AboutCaboVirgenes = () => {
              </div>
           </div>
 
+          {/* Lista de países clicables */}
           <div className="mt-12 flex flex-wrap justify-center gap-3 max-w-6xl mx-auto">
             {COUNTRIES_LIST.map((country, i) => (
               <span
                 key={i}
-                onClick={() => handleCountryClick(country, [0,0])} // Nota: Idealmente necesitamos coordenadas reales para todos, aquí es un fallback
+                // Fallback para click en texto (aunque idealmente se usa el mapa)
+                onClick={() => {
+                   /* Nota: El clic en texto requeriría coordenadas hardcodeadas para todos. 
+                      El clic en mapa es la vía principal. */
+                }}
                 onMouseEnter={() => setHoveredCountry(country)}
                 onMouseLeave={() => setHoveredCountry(null)}
                 className={`px-4 py-2 rounded-full border text-xs font-medium cursor-pointer transition-all duration-300 ${
@@ -405,7 +481,7 @@ const AboutCaboVirgenes = () => {
 
       <Footer />
 
-      {/* --- MODAL FLOTA / BARCOS --- */}
+      {/* --- MODAL FLOTA --- */}
       {selectedShip && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fade-in" onClick={() => setSelectedShip(null)}>
           <div className="glass-modal w-full max-w-4xl rounded-[2rem] overflow-hidden relative flex flex-col max-h-[90vh] shadow-2xl shadow-cyan-900/30 border border-white/10" onClick={(e) => e.stopPropagation()}>
